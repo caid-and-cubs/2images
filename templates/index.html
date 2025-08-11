@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Image - AI Image Generator{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Hero Section -->
+        <div class="hero-section text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary mb-3">
+                <i class="fas fa-paintbrush me-3"></i>AI Image Generator
+            </h1>
+            <p class="lead text-muted">Transform your ideas into stunning visuals with the power of AI</p>
+        </div>
+        
+        <!-- Generation Form -->
+        <div class="card shadow-lg border-0 mb-5">
+            <div class="card-header bg-gradient-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-wand-magic-sparkles me-2"></i>Create Your Image
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form id="generateForm">
+                    <!-- Prompt Input -->
+                    <div class="mb-4">
+                        <label for="prompt" class="form-label fw-semibold">
+                            <i class="fas fa-keyboard me-2"></i>Describe your image
+                        </label>
+                        <textarea 
+                            class="form-control form-control-lg" 
+                            id="prompt" 
+                            name="prompt" 
+                            rows="4" 
+                            placeholder="A serene mountain landscape at sunset with a peaceful lake reflecting the golden sky..."
+                            maxlength="1000"
+                            required
+                        ></textarea>
+                        <div class="form-text">
+                            <span id="charCount">0</span>/1000 characters
+                        </div>
+                    </div>
+                    
+                    <!-- Model Selection -->
+                    <div class="mb-4">
+                        <label for="model" class="form-label fw-semibold">
+                            <i class="fas fa-brain me-2"></i>AI Model
+                        </label>
+                        <select class="form-select form-select-lg" id="model" name="model_name" required>
+                            {% for model in models %}
+                            <option value="{{ model.id }}" {% if loop.first %}selected{% endif %}>
+                                {{ model.name }} - {{ model.description }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Generate Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="generateBtn">
+                            <i class="fas fa-magic me-2"></i>Generate Image
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Loading Section -->
+        <div id="loadingSection" class="text-center d-none mb-5">
+            <div class="card border-0 shadow">
+                <div class="card-body py-5">
+                    <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h4 class="text-primary">Creating your masterpiece...</h4>
+                    <p class="text-muted">This may take 30-60 seconds</p>
+                    <div class="progress mt-3" style="height: 10px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Section -->
+        <div id="resultSection" class="d-none mb-5">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-check-circle me-2"></i>Your Generated Image
+                    </h4>
+                </div>
+                <div class="card-body text-center">
+                    <div id="imageContainer" class="mb-3">
+                        <!-- Generated image will be displayed here -->
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary" id="downloadBtn">
+                            <i class="fas fa-download me-2"></i>Download
+                        </button>
+                        <a href="{{ url_for('gallery') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-images me-2"></i>View Gallery
+                        </a>
+                        <button type="button" class="btn btn-outline-success" id="generateAnotherBtn">
+                            <i class="fas fa-plus me-2"></i>Generate Another
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Error Section -->
+        <div id="errorSection" class="d-none mb-5">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Generation Failed
+                </h4>
+                <p id="errorMessage" class="mb-0"></p>
+                <hr>
+                <button type="button" class="btn btn-outline-danger" id="tryAgainBtn">
+                    <i class="fas fa-redo me-2"></i>Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Images Preview -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-clock me-2"></i>Recent Creations
+                    <a href="{{ url_for('gallery') }}" class="btn btn-sm btn-outline-primary float-end">
+                        View All <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="recentImages" class="row g-3">
+                    <!-- Recent images will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize the image generation functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Character counter for prompt
+    const promptTextarea = document.getElementById('prompt');
+    const charCount = document.getElementById('charCount');
+    
+    promptTextarea.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+    });
+    
+    // Load recent images
+    loadRecentImages();
+});
+</script>
+{% endblock %}
