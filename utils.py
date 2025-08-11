@@ -27,12 +27,62 @@ def get_available_models():
         {
             'id': 'prompthero/openjourney',
             'name': 'OpenJourney',
-            'description': 'Midjourney-style model'
+            'description': 'Midjourney-style artistic model'
         },
         {
             'id': 'wavymulder/Analog-Diffusion',
             'name': 'Analog Diffusion',
             'description': 'Analog photography style'
+        },
+        {
+            'id': 'hakurei/waifu-diffusion',
+            'name': 'Waifu Diffusion',
+            'description': 'Anime and manga style images'
+        },
+        {
+            'id': 'nitrosocke/Arcane-Diffusion',
+            'name': 'Arcane Diffusion',
+            'description': 'Arcane TV series art style'
+        },
+        {
+            'id': 'dreamlike-art/dreamlike-diffusion-1.0',
+            'name': 'Dreamlike Diffusion',
+            'description': 'Dreamy, artistic style'
+        },
+        {
+            'id': 'prompthero/midjourney-v4-diffusion',
+            'name': 'Midjourney v4',
+            'description': 'High-quality artistic generation'
+        },
+        {
+            'id': 'nitrosocke/redshift-diffusion',
+            'name': 'Redshift Diffusion',
+            'description': '3D rendered style images'
+        },
+        {
+            'id': 'wavymulder/portraitplus',
+            'name': 'Portrait Plus',
+            'description': 'Professional portrait photography'
+        },
+        {
+            'id': 'dallinmackay/Van-Gogh-diffusion',
+            'name': 'Van Gogh Diffusion',
+            'description': 'Van Gogh painting style'
+        },
+        {
+            'id': 'nitrosocke/spider-verse-diffusion',
+            'name': 'Spider-Verse',
+            'description': 'Spider-Man animated movie style'
+        },
+        {
+            'id': 'wavymulder/collage-diffusion',
+            'name': 'Collage Diffusion',
+            'description': 'Collage art style'
+        },
+        {
+            'id': 'stabilityai/stable-diffusion-xl-base-1.0',
+            'name': 'Stable Diffusion XL',
+            'description': 'Latest high-resolution model'
         }
     ]
 
