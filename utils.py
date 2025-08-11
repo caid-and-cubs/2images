@@ -10,44 +10,44 @@ def get_available_models():
     """Return list of available Hugging Face models for text-to-image generation"""
     return [
         {
-            'id': 'black-forest-labs/FLUX.1-dev',
-            'name': 'FLUX.1-dev',
-            'description': 'Fast, high-quality generation (Recommended)'
-        },
-        {
             'id': 'stabilityai/stable-diffusion-3-medium-diffusers',
             'name': 'Stable Diffusion 3 Medium',
-            'description': 'Production-ready with excellent prompt adherence'
+            'description': 'Latest high-quality model (Recommended)'
         },
         {
-            'id': 'runwayml/stable-diffusion-v1-5',
+            'id': 'black-forest-labs/FLUX.1-schnell',
+            'name': 'FLUX.1 Schnell',
+            'description': 'Ultra-fast generation, commercial use allowed'
+        },
+        {
+            'id': 'stabilityai/stable-diffusion-xl-base-1.0',
+            'name': 'Stable Diffusion XL',
+            'description': 'High-resolution image generation'
+        },
+        {
+            'id': 'stable-diffusion-v1-5/stable-diffusion-v1-5',
             'name': 'Stable Diffusion 1.5',
-            'description': 'Classic and reliable model'
+            'description': 'Most popular and reliable model'
         },
         {
-            'id': 'stabilityai/stable-diffusion-2-1',
-            'name': 'Stable Diffusion 2.1',
-            'description': 'Improved version with better quality'
+            'id': 'CompVis/stable-diffusion-v1-4',
+            'name': 'Stable Diffusion 1.4',
+            'description': 'Original stable diffusion model'
         },
         {
-            'id': 'prompthero/openjourney-v4',
-            'name': 'OpenJourney v4',
-            'description': 'Midjourney-style artistic generation'
+            'id': 'dreamlike-art/dreamlike-diffusion-1.0',
+            'name': 'Dreamlike Diffusion',
+            'description': 'Artistic and dreamy style images'
         },
         {
-            'id': 'SG161222/Realistic_Vision_V6.0_B1_noVAE',
-            'name': 'Realistic Vision v6',
-            'description': 'Photorealistic image generation'
+            'id': 'prompthero/openjourney',
+            'name': 'OpenJourney',
+            'description': 'Midjourney-style artistic model'
         },
         {
-            'id': 'XpucT/Deliberate',
-            'name': 'Deliberate',
-            'description': 'Versatile model for various styles'
-        },
-        {
-            'id': 'dreamlike-art/dreamlike-photoreal-2.0',
-            'name': 'Dreamlike Photoreal',
-            'description': 'Photorealistic with artistic touch'
+            'id': 'wavymulder/Analog-Diffusion',
+            'name': 'Analog Diffusion',
+            'description': 'Vintage analog photography style'
         }
     ]
 

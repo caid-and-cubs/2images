@@ -1,6 +1,6 @@
 # Overview
 
-This is a Flask-based AI Image Generator web application that allows users to create images from text prompts using Hugging Face's text-to-image models. The application features a clean web interface for generating images, a gallery to view previously generated images, and REST API endpoints for programmatic access. Users can select from multiple AI models including Stable Diffusion variants and other specialized models, with all generated images stored locally and tracked in a database.
+This is "Training Edge AI", a professional Flask-based AI Image Generator web application that allows users to create images from text prompts using Hugging Face's free text-to-image models. The application features a modern web interface for generating images, an interactive gallery to view and manage previously generated images, and comprehensive REST API endpoints for programmatic access. Users can select from 8+ AI models including FLUX.1, Stable Diffusion 3, SDXL, and specialized artistic models. All generated images are stored locally and tracked in a database. The application is fully containerized with Docker and ready for deployment on GitHub.
 
 # User Preferences
 
@@ -36,8 +36,26 @@ Preferred communication style: Simple, everyday language.
 
 ## External Dependencies
 
-- **Hugging Face Inference API**: Primary service for text-to-image generation using models like Stable Diffusion 2.1, Stable Diffusion 1.5, OpenJourney, and Analog Diffusion
+- **Hugging Face Inference API**: Primary service for text-to-image generation using free models like FLUX.1 Schnell, Stable Diffusion 3 Medium, SDXL, OpenJourney, and Analog Diffusion
 - **PIL/Pillow**: Image processing and manipulation library for handling generated images
 - **Bootstrap CDN**: Frontend styling and components via CDN
 - **Font Awesome**: Icon library for UI elements
 - **Flask Extensions**: SQLAlchemy for ORM, CORS for cross-origin support, Werkzeug for middleware and utilities
+
+## Deployment & DevOps
+
+- **Docker**: Complete containerization with Dockerfile and docker-compose.yml
+- **GitHub Integration**: Repository configured for https://github.com/caid-and-cubs/3images.git
+- **Production Ready**: Gunicorn WSGI server, health checks, proper error handling
+- **Environment Configuration**: .env support for API keys and configuration
+- **Free Tier Compatible**: Uses only free APIs and open-source models
+
+## Recent Changes (August 2025)
+
+- Rebranded from "AI Image Generator" to "Training Edge AI"
+- Updated to use working Hugging Face models that are free and verified
+- Added fallback model logic for better reliability
+- Created complete Docker deployment configuration
+- Prepared GitHub repository with comprehensive documentation
+- Added 8+ free AI models including FLUX.1 Schnell and Stable Diffusion 3
+- Implemented automatic model fallback for failed requests
