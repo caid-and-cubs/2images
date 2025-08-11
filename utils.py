@@ -10,79 +10,44 @@ def get_available_models():
     """Return list of available Hugging Face models for text-to-image generation"""
     return [
         {
-            'id': 'stabilityai/stable-diffusion-2-1',
-            'name': 'Stable Diffusion 2.1',
-            'description': 'High-quality general purpose model'
+            'id': 'black-forest-labs/FLUX.1-dev',
+            'name': 'FLUX.1-dev',
+            'description': 'Fast, high-quality generation (Recommended)'
+        },
+        {
+            'id': 'stabilityai/stable-diffusion-3-medium-diffusers',
+            'name': 'Stable Diffusion 3 Medium',
+            'description': 'Production-ready with excellent prompt adherence'
         },
         {
             'id': 'runwayml/stable-diffusion-v1-5',
             'name': 'Stable Diffusion 1.5',
-            'description': 'Classic stable diffusion model'
+            'description': 'Classic and reliable model'
         },
         {
-            'id': 'CompVis/stable-diffusion-v1-4',
-            'name': 'Stable Diffusion 1.4',
-            'description': 'Original stable diffusion model'
+            'id': 'stabilityai/stable-diffusion-2-1',
+            'name': 'Stable Diffusion 2.1',
+            'description': 'Improved version with better quality'
         },
         {
-            'id': 'prompthero/openjourney',
-            'name': 'OpenJourney',
-            'description': 'Midjourney-style artistic model'
+            'id': 'prompthero/openjourney-v4',
+            'name': 'OpenJourney v4',
+            'description': 'Midjourney-style artistic generation'
         },
         {
-            'id': 'wavymulder/Analog-Diffusion',
-            'name': 'Analog Diffusion',
-            'description': 'Analog photography style'
+            'id': 'SG161222/Realistic_Vision_V6.0_B1_noVAE',
+            'name': 'Realistic Vision v6',
+            'description': 'Photorealistic image generation'
         },
         {
-            'id': 'hakurei/waifu-diffusion',
-            'name': 'Waifu Diffusion',
-            'description': 'Anime and manga style images'
+            'id': 'XpucT/Deliberate',
+            'name': 'Deliberate',
+            'description': 'Versatile model for various styles'
         },
         {
-            'id': 'nitrosocke/Arcane-Diffusion',
-            'name': 'Arcane Diffusion',
-            'description': 'Arcane TV series art style'
-        },
-        {
-            'id': 'dreamlike-art/dreamlike-diffusion-1.0',
-            'name': 'Dreamlike Diffusion',
-            'description': 'Dreamy, artistic style'
-        },
-        {
-            'id': 'prompthero/midjourney-v4-diffusion',
-            'name': 'Midjourney v4',
-            'description': 'High-quality artistic generation'
-        },
-        {
-            'id': 'nitrosocke/redshift-diffusion',
-            'name': 'Redshift Diffusion',
-            'description': '3D rendered style images'
-        },
-        {
-            'id': 'wavymulder/portraitplus',
-            'name': 'Portrait Plus',
-            'description': 'Professional portrait photography'
-        },
-        {
-            'id': 'dallinmackay/Van-Gogh-diffusion',
-            'name': 'Van Gogh Diffusion',
-            'description': 'Van Gogh painting style'
-        },
-        {
-            'id': 'nitrosocke/spider-verse-diffusion',
-            'name': 'Spider-Verse',
-            'description': 'Spider-Man animated movie style'
-        },
-        {
-            'id': 'wavymulder/collage-diffusion',
-            'name': 'Collage Diffusion',
-            'description': 'Collage art style'
-        },
-        {
-            'id': 'stabilityai/stable-diffusion-xl-base-1.0',
-            'name': 'Stable Diffusion XL',
-            'description': 'Latest high-resolution model'
+            'id': 'dreamlike-art/dreamlike-photoreal-2.0',
+            'name': 'Dreamlike Photoreal',
+            'description': 'Photorealistic with artistic touch'
         }
     ]
 
@@ -100,37 +65,33 @@ def generate_image_from_text(prompt, model_name, output_path):
     """
     try:
         # Get API key from environment
-        api_key = os.getenv("HUGGINGFACE_API_KEY", "hf_demo_key")
+        api_key = os.getenv("HUGGINGFACE_API_KEY")
         
-        if not api_key or api_key == "hf_demo_key":
-            logger.warning("Using demo API key - may have rate limits")
+        if not api_key:
+            return False, "Hugging Face API key is required. Please add your API key in Secrets."
         
-        # Hugging Face Inference API endpoint
-        api_url = f"https://api-inference.huggingface.co/models/{model_name}"
+        logger.info(f"Generating image with model: {model_name}, prompt: {prompt[:100]}...")
+        
+        # Try the new Inference Providers API first
+        providers_url = f"https://api-inference.huggingface.co/models/{model_name}"
         
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
         
+        # Simple payload for text-to-image
         payload = {
-            "inputs": prompt,
-            "parameters": {
-                "num_inference_steps": 50,
-                "guidance_scale": 7.5,
-                "width": 512,
-                "height": 512
-            }
+            "inputs": prompt
         }
         
-        logger.info(f"Generating image with model: {model_name}, prompt: {prompt[:100]}...")
-        
         # Make request to Hugging Face API
-        response = requests.post(api_url, headers=headers, json=payload, timeout=60)
+        response = requests.post(providers_url, headers=headers, json=payload, timeout=120)
         
         if response.status_code == 200:
             # Check if response is an image
-            if response.headers.get('content-type', '').startswith('image/'):
+            content_type = response.headers.get('content-type', '')
+            if content_type.startswith('image/') or len(response.content) > 1000:
                 # Save image directly
                 with open(output_path, 'wb') as f:
                     f.write(response.content)
@@ -171,6 +132,41 @@ def generate_image_from_text(prompt, model_name, output_path):
         elif response.status_code == 401:
             # Unauthorized
             return False, "Invalid API key. Please check your Hugging Face API key."
+        
+        elif response.status_code == 404:
+            # Model not found, try alternative models
+            logger.warning(f"Model {model_name} not found, trying alternative...")
+            
+            # Try with a known working model
+            fallback_models = [
+                "runwayml/stable-diffusion-v1-5",
+                "CompVis/stable-diffusion-v1-4",
+                "stabilityai/stable-diffusion-2-1"
+            ]
+            
+            for fallback_model in fallback_models:
+                if fallback_model != model_name:
+                    fallback_url = f"https://api-inference.huggingface.co/models/{fallback_model}"
+                    fallback_response = requests.post(fallback_url, headers=headers, json=payload, timeout=120)
+                    
+                    if fallback_response.status_code == 200:
+                        content_type = fallback_response.headers.get('content-type', '')
+                        if content_type.startswith('image/') or len(fallback_response.content) > 1000:
+                            with open(output_path, 'wb') as f:
+                                f.write(fallback_response.content)
+                            
+                            try:
+                                with Image.open(output_path) as img:
+                                    if img.mode != 'RGB':
+                                        img = img.convert('RGB')
+                                    img.save(output_path, 'PNG')
+                                
+                                logger.info(f"Image generated with fallback model: {fallback_model}")
+                                return True, f"Image generated successfully (using {fallback_model})"
+                            except:
+                                continue
+            
+            return False, "Model not available. Please try a different model."
         
         else:
             logger.error(f"API request failed with status {response.status_code}: {response.text}")
