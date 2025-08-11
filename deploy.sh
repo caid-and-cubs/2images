@@ -13,7 +13,7 @@ fi
 # Ajouter le remote GitHub
 echo "🔗 Configuration du remote GitHub..."
 git remote remove origin 2>/dev/null || true
-git remote add origin https://github.com/caid-and-cubs/3images.git
+git remote add origin https://github.com/caid-and-cubs/2images.git
 
 # Ajouter tous les fichiers
 echo "📁 Ajout des fichiers..."
@@ -49,6 +49,6 @@ echo ""
 echo "🐳 Pour tester avec Docker:"
 echo "   docker-compose up --build"
 echo ""
-echo "🌐 URL du repository: https://github.com/caid-and-cubs/3images"
+echo "🌐 URL du repository: https://github.com/caid-and-cubs/2images"
 echo ""
 echo "🔑 N'oubliez pas de configurer votre HUGGINGFACE_API_KEY!"
