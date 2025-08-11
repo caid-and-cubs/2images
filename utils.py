@@ -18,36 +18,6 @@ def get_available_models():
             'id': 'black-forest-labs/FLUX.1-schnell',
             'name': 'FLUX.1 Schnell',
             'description': 'Ultra-fast generation, commercial use allowed'
-        },
-        {
-            'id': 'stabilityai/stable-diffusion-xl-base-1.0',
-            'name': 'Stable Diffusion XL',
-            'description': 'High-resolution image generation'
-        },
-        {
-            'id': 'stable-diffusion-v1-5/stable-diffusion-v1-5',
-            'name': 'Stable Diffusion 1.5',
-            'description': 'Most popular and reliable model'
-        },
-        {
-            'id': 'CompVis/stable-diffusion-v1-4',
-            'name': 'Stable Diffusion 1.4',
-            'description': 'Original stable diffusion model'
-        },
-        {
-            'id': 'dreamlike-art/dreamlike-diffusion-1.0',
-            'name': 'Dreamlike Diffusion',
-            'description': 'Artistic and dreamy style images'
-        },
-        {
-            'id': 'prompthero/openjourney',
-            'name': 'OpenJourney',
-            'description': 'Midjourney-style artistic model'
-        },
-        {
-            'id': 'wavymulder/Analog-Diffusion',
-            'name': 'Analog Diffusion',
-            'description': 'Vintage analog photography style'
         }
     ]
 
@@ -139,9 +109,8 @@ def generate_image_from_text(prompt, model_name, output_path):
             
             # Try with a known working model
             fallback_models = [
-                "runwayml/stable-diffusion-v1-5",
-                "CompVis/stable-diffusion-v1-4",
-                "stabilityai/stable-diffusion-2-1"
+                "stabilityai/stable-diffusion-3-medium-diffusers",
+                "black-forest-labs/FLUX.1-schnell"
             ]
             
             for fallback_model in fallback_models:
