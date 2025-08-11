@@ -298,13 +298,31 @@ async function loadRecentImages() {
             const title = card.querySelector('.card-title');
             
             if (img && title) {
-                col.innerHTML = `
-                    <div class="card h-100 shadow-sm border-0 recent-image-card">
-                        <div class="recent-image-container">
-                            <img src="${img.src}" class="card-img-top" alt="${title.textContent}" loading="lazy">
-                        </div>
-                    </div>
-                `;
+                // Create elements safely to prevent XSS
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card h-100 shadow-sm border-0 recent-image-card';
+                
+                const containerDiv = document.createElement('div');
+                containerDiv.className = 'recent-image-container';
+                
+                const imgElement = document.createElement('img');
+                imgElement.className = 'card-img-top';
+                imgElement.loading = 'lazy';
+                
+                // Safely set attributes with validation
+                const imgSrc = img.src;
+                if (imgSrc && (imgSrc.startsWith('/') || imgSrc.startsWith('http://') || imgSrc.startsWith('https://'))) {
+                    imgElement.src = imgSrc;
+                } else {
+                    imgElement.src = '/static/images/placeholder.jpg'; // fallback
+                }
+                
+                // Use textContent to safely set alt text
+                imgElement.alt = title.textContent || 'Generated image';
+                
+                containerDiv.appendChild(imgElement);
+                cardDiv.appendChild(containerDiv);
+                col.appendChild(cardDiv);
             }
             
             recentImagesContainer.appendChild(col);
@@ -422,10 +440,18 @@ function showToast(message, type = 'info') {
         animation: slideInRight 0.3s ease-out;
     `;
     
-    toast.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    `;
+    // Create message text safely
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
+    toast.appendChild(messageSpan);
+    
+    // Create close button safely
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'btn-close';
+    closeBtn.setAttribute('data-bs-dismiss', 'alert');
+    closeBtn.setAttribute('aria-label', 'Close');
+    toast.appendChild(closeBtn);
     
     document.body.appendChild(toast);
     
