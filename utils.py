@@ -18,6 +18,11 @@ def get_available_models():
             'id': 'black-forest-labs/FLUX.1-schnell',
             'name': 'FLUX.1 Schnell',
             'description': 'Ultra-fast generation, commercial use allowed'
+        },
+        {
+            'id': 'stabilityai/stable-diffusion-xl-base-1.0',
+            'name': 'Stable Diffusion XL',
+            'description': 'High-resolution image generation (1024x1024)'
         }
     ]
 
@@ -110,7 +115,8 @@ def generate_image_from_text(prompt, model_name, output_path):
             # Try with a known working model
             fallback_models = [
                 "stabilityai/stable-diffusion-3-medium-diffusers",
-                "black-forest-labs/FLUX.1-schnell"
+                "black-forest-labs/FLUX.1-schnell",
+                "stabilityai/stable-diffusion-xl-base-1.0"
             ]
             
             for fallback_model in fallback_models:
