@@ -68,7 +68,7 @@ http://localhost:5000
 
 2. **Installation**
 ```bash
-git clone https://github.com/caid-and-cubs/3images.git
+git clone https://github.com/caid-and-cubs/2images.git
 cd 3images
 
 # Avec uv (recommandé)
